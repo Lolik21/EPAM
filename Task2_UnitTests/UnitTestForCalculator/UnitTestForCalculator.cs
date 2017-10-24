@@ -4,6 +4,9 @@ using Task2_UnitTests;
 
 namespace UnitTestForCalculator
 {
+    /// <summary>
+    /// Contains test for class Calculator
+    /// </summary>
     [TestClass]
     public class UnitTestForCalculator
     {
