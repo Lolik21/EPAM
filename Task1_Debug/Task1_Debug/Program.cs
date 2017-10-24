@@ -8,10 +8,11 @@ namespace Task1_Debug
 {
     class Program
     {
-        const int NUMERS_COUNT = 1000;
+        const int NUMBERS_COUNT = 1000;
+        const int NUMBERS_PER_LINE = 10;
         static void Main(string[] args)
         {
-            int[] NumbersArray = new int[NUMERS_COUNT];
+            int[] NumbersArray = new int[NUMBERS_COUNT];
             for (int i = 0; i<NumbersArray.Length; i++)
             {
                 NumbersArray[i] = i;
@@ -23,7 +24,7 @@ namespace Task1_Debug
             for (int i = 0; i<NumbersArray.Length; i++)
             {
                 Console.Write(NumbersArray[i] + " ");
-                if (i % 10 == 0) Console.WriteLine();
+                if (i % NUMBERS_PER_LINE == 0) Console.WriteLine();
             }
             Console.ReadLine();
         }
