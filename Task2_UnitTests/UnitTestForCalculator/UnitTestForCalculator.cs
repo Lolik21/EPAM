@@ -17,7 +17,8 @@ namespace UnitTestForCalculator
         public void Add_333Plus777_1110Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+           
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Add(333, 777);
             // assert
@@ -31,7 +32,7 @@ namespace UnitTestForCalculator
         public void Add_666Plus777_1443Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Add(666, 777);
             // assert
@@ -48,7 +49,7 @@ namespace UnitTestForCalculator
         public void Add_MaxIntPlusMaxInt_OverflowExceptionExpected()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Add(int.MaxValue, int.MaxValue);
             // assert is handled by the ExpectedException
@@ -61,7 +62,7 @@ namespace UnitTestForCalculator
         public void Divide_777Divide111_7Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             double rezult = calc.Divide(777, 111);
             // assert
@@ -75,7 +76,7 @@ namespace UnitTestForCalculator
         public void Divide_777Divide7_111Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             double rezult = calc.Divide(777, 7);
             // assert
@@ -91,7 +92,7 @@ namespace UnitTestForCalculator
         public void Divide_1Divide0_DivideByZeroExceptionExpected()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             double rezult = calc.Divide(1, 0);
             // assert is handled by the ExpectedException
@@ -104,7 +105,7 @@ namespace UnitTestForCalculator
         public void Subtract_777Minus333_444Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Subtract(777, 333);
             // assert
@@ -118,7 +119,7 @@ namespace UnitTestForCalculator
         public void Subtract_777Minus666_111Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Subtract(777, 666);
             // assert
@@ -135,7 +136,7 @@ namespace UnitTestForCalculator
         public void Subtract_MinIntMinusMaxInt_OverflowExceptionExpected()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Subtract(int.MinValue, int.MaxValue);
             // assert is handled by the ExpectedException
@@ -148,7 +149,7 @@ namespace UnitTestForCalculator
         public void Multiply_333Times777_258741Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Multiply(333, 777);
             // assert
@@ -162,7 +163,7 @@ namespace UnitTestForCalculator
         public void Multiply_6Times7_42Returned()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Multiply(6, 7);
             // assert
@@ -179,7 +180,7 @@ namespace UnitTestForCalculator
         public void Multiply_MaxIntTimesMaxInt_OverflowExceptionExpected()
         {
             // arrange
-            Calculator calc = new Calculator();
+            ISimpleCalculator calc = new Calculator();
             // act 
             int rezult = calc.Multiply(int.MaxValue, int.MaxValue);
             // assert is handled by the ExpectedException

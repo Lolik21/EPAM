@@ -9,7 +9,7 @@ namespace Task2_UnitTests
     /// <summary>
     /// Defines methods of simple calculator
     /// </summary>
-    interface ISimpleCalculator
+    public interface ISimpleCalculator
     {
         int Add(int Value1, int Value2);
         int Subtract(int Value1, int Value2);
