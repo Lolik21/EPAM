@@ -7,31 +7,31 @@ namespace UnitTestForPoint
     [TestClass]
     public class UnitTests
     {
-        //[TestMethod]
-        //public void OperatorPlus_CoodsAdded_10CoordX10CoordYExpected()
-        //{
-        //    //arrange
-        //    GeometricPoint point1 = new GeometricPoint()
-        //    {
-        //        CoordX = 5,
-        //        CoordY = 5
-        //    };
+        [TestMethod]
+        public void OperatorPlus_CoodsAdded_10CoordX10CoordYExpected()
+        {
+            //arrange
+            GeometricPoint point1 = new GeometricPoint()
+            {
+                CoordX = 5,
+                CoordY = 5
+            };
 
-        //    GeometricPoint point2 = new GeometricPoint()
-        //    {
-        //        CoordX = 5,
-        //        CoordY = 5
-        //    };
+            GeometricPoint point2 = new GeometricPoint()
+            {
+                CoordX = 5,
+                CoordY = 5
+            };
 
-        //    GeometricPoint point3 = new GeometricPoint();
+            GeometricPoint point3 = new GeometricPoint();
 
-        //    //act
-        //    point3 = point1 + point2;
+            //act
+            point3 = point1 + point2;
 
-        //    //assert
-        //    Assert.AreEqual(point3.CoordX, 10);
-        //    Assert.AreEqual(point3.CoordY, 10);
-        //}
+            //assert
+            Assert.AreEqual(point3.CoordX, 10);
+            Assert.AreEqual(point3.CoordY, 10);
+        }
 
         //[TestMethod]
         //public void OperatorPlus_CoodsAdded_30CoordX20CoordYExpected()
