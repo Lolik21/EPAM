@@ -6,6 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestForDI
 {
+    using Epam_9.Exceptions;
+
     [TestClass]
     public class UnitTestsForDI
     {
@@ -85,7 +87,7 @@ namespace UnitTestForDI
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ContainerAlreadyExistsException))]
         public void RegisterTwoTimesToItself()
         {
             SimpleDependencyInjector di = new SimpleDependencyInjector();
@@ -107,7 +109,7 @@ namespace UnitTestForDI
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ContainerAlreadyExistsException))]
         public void RegisterTwoTimesToInterface()
         {
             SimpleDependencyInjector di = new SimpleDependencyInjector();
@@ -180,7 +182,7 @@ namespace UnitTestForDI
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InstanceNotFoundException))]
+        [ExpectedException(typeof(InvalidConstructorException))]
         public void InjectionFaiedInstanseNotFounded()
         {
             SimpleDependencyInjector di = new SimpleDependencyInjector();
@@ -206,7 +208,7 @@ namespace UnitTestForDI
         }
 
         [TestMethod]
-        [ExpectedException(typeof(InstanceNotFoundException))]
+        [ExpectedException(typeof(InvalidConstructorException))]
         public void InjectionFailDependencyNotFound()
         {
             SimpleDependencyInjector di = new SimpleDependencyInjector();
@@ -219,7 +221,7 @@ namespace UnitTestForDI
 
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [ExpectedException(typeof(ClassDoNotImplementInterfaceException))]
         public void RegisterWithClassNotImplementsInterface()
         {
             SimpleDependencyInjector di = new SimpleDependencyInjector();
@@ -252,5 +254,15 @@ namespace UnitTestForDI
             Assert.AreEqual(null, testClass.Property1);
             Assert.AreEqual(null, testClass.Property2);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidTypeException))]
+        public void InvalidInterfaceTypeTest()
+        {
+            SimpleDependencyInjector di = new SimpleDependencyInjector();     
+
+            di.Register(typeof(MyClass), typeof(MyClass));
+        }
+
     }
 }

@@ -7,14 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Management.Instrumentation;
-using System.Reflection;
-
 namespace Epam_9
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Management.Instrumentation;
+    using System.Reflection;
+
+    using Epam_9.Exceptions;
+
     /// <summary>
     /// The simple di.
     /// </summary>
@@ -25,13 +27,13 @@ namespace Epam_9
         /// </summary>
         public SimpleDependencyInjector()
         {
-            this.TypeConteiners = new List<Container>();
+            this.TypeContainers = new List<Container>();
         }
 
         /// <summary>
         /// Gets list of the classType containers.
         /// </summary>
-        public List<Container> TypeConteiners { get; }
+        public List<Container> TypeContainers { get; }
 
         /// <summary>
         /// Register's class classType.
@@ -52,11 +54,12 @@ namespace Epam_9
         {
             this.ValidateTypes(type, interfaceType);
 
-            Container container = this.TypeConteiners.FirstOrDefault(c => c.Class == type && c.Key == key && c.Interface == interfaceType);
+            Container container = this.TypeContainers.FirstOrDefault(c => c.Class == type && 
+                c.Key == key && c.Interface == interfaceType);
 
             if (container != null)
             {
-                throw new ArgumentException("Dependency is already registered");
+                throw new ContainerAlreadyExistsException(nameof(container));
             }
 
             this.RegisterNew(type, interfaceType, key);
@@ -95,7 +98,7 @@ namespace Epam_9
         /// </returns>
         public object Resolve(Type type, string key)
         {
-            Container container = this.TypeConteiners.FirstOrDefault(c => c.Class == type && c.Key == key);
+            Container container = this.TypeContainers.FirstOrDefault(c => c.Class == type && c.Key == key);
             if (container == null)
             {
                 return null;
@@ -118,7 +121,7 @@ namespace Epam_9
         /// </returns>
         public object Resolve(Type type, Type interfaceType)
         {
-            foreach (var typeConteiner in this.TypeConteiners)
+            foreach (var typeConteiner in this.TypeContainers)
             {
                 if (typeConteiner.Interface == interfaceType && typeConteiner.Class == type)
                 {
@@ -187,7 +190,7 @@ namespace Epam_9
 
             foreach (var propertyInfo in properties)
             {
-                var cont = this.TypeConteiners.FirstOrDefault(c => c.Interface == propertyInfo.PropertyType);
+                var cont = this.TypeContainers.FirstOrDefault(c => c.Interface == propertyInfo.PropertyType);
                 if (cont != null)
                 {
                     propertyInfo.SetValue(obj, this.Resolve(cont.Class, cont.Interface));
@@ -206,7 +209,7 @@ namespace Epam_9
         /// </returns>
         private object ResolveFromClass(Type classType)
         {
-            foreach (var conteiner in this.TypeConteiners)
+            foreach (var conteiner in this.TypeContainers)
             {
                 if (conteiner.Class == classType)
                 {
@@ -228,7 +231,7 @@ namespace Epam_9
         /// </returns>
         private object ResolveFromInterface(Type typeInterface)
         {
-            foreach (var conteiner in this.TypeConteiners)
+            foreach (var conteiner in this.TypeContainers)
             {
                 if (conteiner.Interface == typeInterface)
                 {
@@ -296,10 +299,10 @@ namespace Epam_9
 
             foreach (var type in maxCtorTypes)
             {
-                var cont = this.TypeConteiners.FirstOrDefault(c => c.Interface == type);
+                var cont = this.TypeContainers.FirstOrDefault(c => c.Interface == type);
                 if (cont == null)
                 {
-                    throw new InstanceNotFoundException("Cannot create instance with Ctor with max parameters");
+                    throw new InvalidConstructorException("Cannot create instance with constructor with max parameters");
                 }
 
                 objects.Add(this.Resolve(cont.Class, cont.Interface));
@@ -334,7 +337,7 @@ namespace Epam_9
 
             if (isPresent == false)
             {
-                throw new ArgumentException(nameof(typeInterface));
+                throw new ClassDoNotImplementInterfaceException(nameof(typeInterface));
             }
         }
 
@@ -360,7 +363,7 @@ namespace Epam_9
             {
                 if (!interfaceType.IsInterface)
                 {
-                    throw new ArgumentException(nameof(interfaceType));
+                    throw new InvalidTypeException(nameof(interfaceType));
                 }
 
                 this.CheckClassInterfaces(type, interfaceType);
@@ -373,7 +376,7 @@ namespace Epam_9
 
             if (type.IsInterface)
             {
-                throw new ArgumentException(nameof(type));
+                throw new InvalidTypeException(nameof(type));
             }
         }
 
@@ -391,13 +394,13 @@ namespace Epam_9
         /// </param>
         private void RegisterNew(Type classType, Type interfaceType, string key)
         {
-            var conteiner = new Container()
+            var container = new Container()
             {
                 Class = classType,
                 Key = key,
                 Interface = interfaceType
             };
-            this.TypeConteiners.Add(conteiner);
+            this.TypeContainers.Add(container);
         }
     }
 }
