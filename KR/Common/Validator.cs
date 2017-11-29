@@ -8,27 +8,15 @@
 
     using WebStore.Exceptions;
 
+    /// <summary>
+    /// The validator class that validates product fields.
+    /// </summary>
     public class Validator
     {
         private const int NAME_MINLENGTH = 10;
         private const int NAME_MAXLENGTH = 50;
         private const int DESC_MINLENGTH = 10;
         private const int DESC_MAXLENGTH = 1000;
-
-        /// <summary>
-        /// Validates product fields.
-        /// </summary>
-        /// <param name="product">
-        /// The product.
-        /// </param>
-        public void ValidateProduct(Product product)
-        {
-            this.ValidateLink(product);
-            this.ValidateName(product.Name);
-            this.ValidateDescription(product.Description);
-            this.ValidateSize(product.Width);
-            this.ValidateWeight(product.Weight);
-        }
 
         /// <summary>
         /// Validates link.
@@ -39,7 +27,7 @@
         /// <exception cref="ArgumentNullException">
         /// Throws when Product is null
         /// </exception>
-        public void ValidateLink(Product product)
+        public void ValidateLink(AbstractProduct product)
         {
             if (product == null)
             {
@@ -61,12 +49,12 @@
         /// <summary>
         /// Validates description.
         /// </summary>
-        /// <param name="desctiption">
+        /// <param name="description">
         /// The description of the product.
         /// </param>
-        public void ValidateDescription(string desctiption)
+        public void ValidateDescription(string description)
         {
-            this.ValidateString(desctiption, DESC_MINLENGTH, DESC_MAXLENGTH);
+            this.ValidateString(description, DESC_MINLENGTH, DESC_MAXLENGTH);
         }
 
         /// <summary>
@@ -80,7 +68,7 @@
         {
             if (sizeParam <= 0)
             {
-                throw new InvalidSizeException("");
+                throw new InvalidSizeException("Size of the product cannot be zero of less");
             }
         }
 
@@ -97,7 +85,7 @@
         {
             if (weight <= 0)
             {
-                throw new InvalidWeightException();
+                throw new InvalidWeightException("Weight cannot be zero or less");
             }
         }
 
@@ -122,21 +110,22 @@
         /// <exception cref="ValidationException">
         /// Throws when regular expression validation failed
         /// </exception>
-        private void ValidateString(string str, int minLength,int maxLength)
+        private void ValidateString(string str, int minLength, int maxLength)
         {
             if (str == null)
             {
                 throw new ArgumentNullException(nameof(str));
             }
+
             if (string.IsNullOrEmpty(str))
             {
                 throw new EmptyStringException(nameof(str));
             }
-            if (!Regex.IsMatch(str, $"^[a-zA-Z ]{{{minLength},{maxLength}}}$"))
+
+            if (!Regex.IsMatch(str, $"^[0-9a-zA-Z ]{{{minLength},{maxLength}}}$"))
             {
-                throw new ValidationException(nameof(str));
+                throw new InvalidStringException(nameof(str));
             }
         }
-
     }
 }

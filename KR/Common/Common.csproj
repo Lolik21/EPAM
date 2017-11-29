@@ -42,10 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DeleteNotCompletedException.cs" />
     <Compile Include="Exceptions\EmptyStringException.cs" />
     <Compile Include="Exceptions\InvalidSizeException.cs" />
+    <Compile Include="Exceptions\InvalidStringException.cs" />
     <Compile Include="Exceptions\InvalidWeightException.cs" />
-    <Compile Include="Products\PhoneProduct.cs" />
+    <Compile Include="Products\ConcreteProduct.cs" />
     <Compile Include="Products\AbstractProduct.cs" />
     <Compile Include="ProductEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

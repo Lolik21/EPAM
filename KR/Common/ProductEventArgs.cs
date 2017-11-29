@@ -12,6 +12,6 @@
         /// <summary>
         /// Gets or sets the product.
         /// </summary>
-        public Product Product { get; set; }
+        public AbstractProduct Product { get; set; }
     }
 }

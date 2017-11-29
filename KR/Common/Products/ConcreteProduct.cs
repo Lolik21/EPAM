@@ -5,7 +5,7 @@
     /// <summary>
     /// The phone product.
     /// </summary>
-    public class PhoneProduct : AbstractProduct
+    public class ConcreteProduct : AbstractProduct
     {
         /// <summary>
         /// The _width.
@@ -14,8 +14,29 @@
 
         /// <summary>
         /// The _height.
+        /// </summary>
         private double _height;
 
+        /// <summary>
+        /// The weight of the product.
+        /// </summary>
+        private double _weight;
+
+        /// <summary>
+        /// Gets or sets the weight of the product.
+        /// </summary>
+        public double Weight
+        {
+            get => this._weight;
+            set
+            {
+                Validator validator = new Validator();
+                validator.ValidateWeight(value);
+                this._weight = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the width of the product.
         /// </summary>
         public double Width
@@ -64,8 +85,7 @@
                 return false;
             }
 
-            PhoneProduct product = obj as PhoneProduct;
-            return product != null && this.CompareFields(product);
+            return obj is ConcreteProduct product && this.CompareFields(product);
         }
 
         /// <summary>
@@ -81,6 +101,7 @@
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int)this.Height;
                 hashCode = (hashCode * 397) ^ (int)this.Width;
+                hashCode = (hashCode * 397) ^ (int)this.Weight;
                 return hashCode;
             }
         }
@@ -97,14 +118,14 @@
         /// </returns>
         protected override bool CompareFields(AbstractProduct product)
         {
-            bool isEquals = base.CompareFields(product);
-            PhoneProduct phoneProduct = product as PhoneProduct;
-            if (phoneProduct == null)
+            var isEquals = base.CompareFields(product);
+            if (!(product is ConcreteProduct phoneProduct))
             {
                 return false;
             }
+
             isEquals = isEquals && this.Width == phoneProduct.Width
-                && this.Height == phoneProduct.Height;
+                && this.Height == phoneProduct.Height && this.Weight == phoneProduct.Weight;
             return isEquals;
         }
     }

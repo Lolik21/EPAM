@@ -2,6 +2,8 @@
 
 namespace Repository
 {
+    using System;
+
     using Common;
 
     /// <summary>
@@ -12,14 +14,14 @@ namespace Repository
         /// <summary>
         /// The products list.
         /// </summary>
-        private List<Product> _products;
+        private readonly List<AbstractProduct> _products;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListRepository"/> class.
         /// </summary>
         public ListRepository()
         {
-            this._products = new List<Product>();
+            this._products = new List<AbstractProduct>();
         }
 
         /// <summary>
@@ -28,16 +30,16 @@ namespace Repository
         /// <param name="product">
         /// The product to add.
         /// </param>
-        public void Add(Product product)
+        public void Add(AbstractProduct product)
         {
             if (this._products.Contains(product))
             {
-                this._products.Find(p => p.Equals(product)).Count++;
+                this._products.Find(p => p.Equals(product)).Count += product.Count;
             }
             else
             {
                 this._products.Add(product);
-                product.ID = (uint)this._products.IndexOf(product);
+                product.Id = (uint)this._products.IndexOf(product);
             }         
         }
 
@@ -47,18 +49,55 @@ namespace Repository
         /// <param name="product">
         /// The product to delete.
         /// </param>
-        public void Delete(Product product)
+        public void SellProduct(AbstractProduct product)
         {
-            Product findedProduct = this._products.Find(p => p == product);
+            AbstractProduct foundProduct = this._products.Find(p => p.Equals(product));
+            if (foundProduct.Count > 0)
+            {
+                foundProduct.Count--;
+            }
+        }
 
-            if (findedProduct.Count > 0)
+        /// <summary>
+        /// Deletes product by Id.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        public void Delete(uint id)
+        {
+            this._products.RemoveAt((int)id);
+        }
+
+        /// <summary>
+        /// Updates product from repository
+        /// according to ID
+        /// </summary>
+        /// <param name="product">
+        /// The product.
+        /// </param>
+        public void Update(AbstractProduct product)
+        {
+            AbstractProduct foundProduct = this._products.Find(p => p.Id == product.Id);
+            if (foundProduct != null)
             {
-                findedProduct.Count--;
+                this._products.RemoveAt((int)foundProduct.Id);
+                this._products.Insert((int)foundProduct.Id, product);
             }
-            else
-            {
-                this._products.Remove(findedProduct);
-            }
+        }
+
+        /// <summary>
+        /// Gets product by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id.
+        /// </param>
+        /// <returns>
+        /// The <see cref="AbstractProduct"/>.
+        /// </returns>
+        public AbstractProduct Get(uint id)
+        {
+            return this._products.Find(p => p.Id == id);
         }
     }
 }

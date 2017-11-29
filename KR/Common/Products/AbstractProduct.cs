@@ -1,42 +1,55 @@
 ﻿
 namespace Common
 {
-    using System.Diagnostics.CodeAnalysis;
-    using System.Runtime.InteropServices;
-
     using WebStore;
 
+    /// <summary>
+    /// The abstract product.
+    /// </summary>
     public abstract class AbstractProduct
     {
+        /// <summary>
+        /// The name of the product.
+        /// </summary>
         private string _name;
 
-        private string _description;
-
-        private double _weight;
-
-
-
         /// <summary>
-        /// Gets or sets the id of the product.
+        /// The description of the product.
         /// </summary>
-        public uint ID { get; set; }
+        private string _description;
 
         /// <summary>
         /// Gets or sets the name of the product.
         /// </summary>
         public string Name
         {
-            get
-            {
-                return _name;
-            }
+            get => this._name;
             set
             {
                 Validator validator = new Validator();
                 validator.ValidateName(value);
-                _name = value;
+                this._name = value;
+            }
+        }    
+
+        /// <summary>
+        /// Gets or sets the description of the product.
+        /// </summary>
+        public string Description
+        {
+            get => this._description;
+            set
+            {
+                Validator validator = new Validator();
+                validator.ValidateDescription(value);
+                this._description = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the id of the product.
+        /// </summary>
+        public uint Id { get; set; }
 
         /// <summary>
         /// Gets or sets the price of the product.
@@ -44,60 +57,39 @@ namespace Common
         public uint Price { get; set; }
 
         /// <summary>
-        /// Gets or sets the weight of the product.
-        /// </summary>
-        public double Weight
-        {
-            get
-            {
-                return this.Weight;
-            }
-            set
-            {
-                Validator validator = new Validator();
-                validator.ValidateWeight(value);
-                this.Weight = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the description of the product.
-        /// </summary>
-        public string Description
-        {
-            get
-            {
-                return this.Description;
-            }
-            set
-            {
-                Validator validator = new Validator();
-                validator.ValidateDescription(value);
-                this.Description = value;
-            }
-        }
-
-        /// <summary>
         /// Gets or sets the count of the product.
+        /// P.S my shop is too small to operate
+        /// numbers near max values of unsigned integer
         /// </summary>
         public uint Count { get; set; }
 
+        /// <summary>
+        /// Compares two products.
+        /// </summary>
+        /// <param name="obj">
+        /// The product to compare.
+        /// </param>
+        /// <returns>
+        /// The <see cref="bool"/> true if product is equal
+        /// vice versa returns false.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null)
             {
                 return false;
             }
+
             if (obj.GetType() != this.GetType())
             {
                 return false;
             }
 
-            AbstractProduct product = obj as AbstractProduct;
-            if (product == null)
+            if (!(obj is AbstractProduct product))
             {
                 return false;
             }
+
             return this.CompareFields(product);
         }
 
@@ -109,12 +101,8 @@ namespace Common
         /// </returns>
         public override int GetHashCode()
         {
-            unchecked
-            {
-                var hashCode = (int)this.ID;
-                hashCode = (hashCode * 397) ^ (int)this.Price;
-                return hashCode;
-            }
+            var hashCode = this._name.GetHashCode();
+            return hashCode;
         }
 
         /// <summary>
@@ -129,12 +117,9 @@ namespace Common
         /// </returns>
         protected virtual bool CompareFields(AbstractProduct product)
         {
-            bool isEquals = !(this.Name != product.Name && 
-                this.Description != product.Description && 
-                this.Price != product.Price && 
-                this.Weight != product.Weight);
+            var isEquals = this.Name == product.Name && this.Description == product.Description
+                           && this.Price == product.Price ;
             return isEquals;
         }
-            
     }
 }
